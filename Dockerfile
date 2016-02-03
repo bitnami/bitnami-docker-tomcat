@@ -1,16 +1,20 @@
 FROM bitnami/base-ubuntu:14.04-onbuild
 MAINTAINER Bitnami <containers@bitnami.com>
 
-ENV BITNAMI_APP_DIR=$BITNAMI_PREFIX/apache-tomcat \
-    BITNAMI_APP_NAME=tomcat \
+ENV BITNAMI_APP_NAME=tomcat \
     BITNAMI_APP_USER=tomcat \
     BITNAMI_APP_DAEMON=catalina.sh \
-    BITNAMI_APP_VERSION=7.0.67-0-r01
+    BITNAMI_APP_VERSION=8.0.30-0 \
+    BITNAMI_APP_OPTIONS="--username manager --password tomcat" \
+    BITNAMI_APP_LANG=java \
+    BITNAMI_APP_LANG_VERSION=1.8.0_65-0
 
-ENV BITNAMI_APP_VOL_PREFIX=/bitnami/$BITNAMI_APP_NAME \
-    PATH=$BITNAMI_APP_DIR/bin:$PATH
+ENV BITNAMI_APP_DIR=$BITNAMI_PREFIX/$BITNAMI_APP_NAME \
+    BITNAMI_APP_VOL_PREFIX=/bitnami/$BITNAMI_APP_NAME
 
-RUN $BITNAMI_PREFIX/install.sh --tomcat_manager_username manager
+ENV PATH=$BITNAMI_APP_DIR/bin:$PATH
+
+RUN $BITNAMI_PREFIX/install.sh
 
 COPY rootfs/ /
 
