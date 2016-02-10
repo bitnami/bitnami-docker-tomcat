@@ -8,11 +8,7 @@ initialize_webapps_directory() {
 }
 
 set_manager_password() {
-  if [ "$TOMCAT_PASSWORD" ]; then
-    echo ""
-    echo "==> Setting manager password..."
-    sed -i "s/^\(<user username=\"manager\" password=\"\)\([^ \"]*\)\(\".*\)/\1$TOMCAT_PASSWORD\3/" $BITNAMI_APP_VOL_PREFIX/conf/tomcat-users.xml
-  fi
+  sed -i "s/^\(<user username=\"manager\" password=\"\)\([^ \"]*\)\(\".*\)/\1$TOMCAT_PASSWORD\3/" $BITNAMI_APP_VOL_PREFIX/conf/tomcat-users.xml
 }
 
 print_tomcat_password() {

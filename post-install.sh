@@ -1,6 +1,10 @@
 #!/bin/bash
 cd $BITNAMI_APP_DIR
 
+# create user home
+mkdir -m 0755 -p /home/${BITNAMI_APP_USER}
+chown -R ${BITNAMI_APP_USER}: /home/${BITNAMI_APP_USER}
+
 # move the default conf directory
 mv conf conf.defaults
 
