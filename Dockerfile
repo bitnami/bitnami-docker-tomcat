@@ -1,4 +1,4 @@
-FROM gcr.io/stacksmith-images/ubuntu:14.04
+FROM gcr.io/stacksmith-images/ubuntu:14.04-r05
 MAINTAINER Bitnami <containers@bitnami.com>
 
 ENV BITNAMI_APP_NAME=tomcat \
@@ -28,5 +28,5 @@ COPY rootfs/ /
 
 EXPOSE 8080
 
-ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["/app-entrypoint.sh"]
 CMD ["harpoon", "start", "--foreground", "tomcat"]
