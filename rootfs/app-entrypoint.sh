@@ -10,8 +10,6 @@ fi
 
 # HACKS
 
-mkdir -p /bitnami/$BITNAMI_APP_NAME
-
 if [ ! -d /bitnami/$BITNAMI_APP_NAME/conf ]; then
   cp -a /opt/bitnami/$BITNAMI_APP_NAME/conf /bitnami/$BITNAMI_APP_NAME/conf
 fi
