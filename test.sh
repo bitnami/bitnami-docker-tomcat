@@ -9,7 +9,7 @@ TOMCAT_PASSWORD=test_password
 APP_NAME=tomcat
 SLEEP_TIME=10
 VOL_PREFIX=/bitnami/$APP_NAME
-VOLUMES=
+VOLUMES=/bitnami/$APP_NAME
 load tests/docker_helper
 
 # Cleans up all running/stopped containers and host mounted volumes
@@ -67,6 +67,37 @@ cleanup_environment
     -e TOMCAT_PASSWORD=$TOMCAT_PASSWORD
 
   container_restart default
+
+  run curl_client default -i http://$TOMCAT_DEFAULT_USER:$TOMCAT_PASSWORD@$APP_NAME:8080/manager/html
+  [[ "$output" =~ '200 OK' ]]
+}
+
+@test "All the volumes exposed" {
+  container_create default -d
+
+  run container_inspect default --format {{.Mounts}}
+  [[ "$output" =~ "$VOL_PREFIX" ]]
+}
+
+@test "Data gets generated in volume if bind mounted in the host" {
+  container_create_with_host_volumes default -d \
+    -e TOMCAT_PASSWORD=$TOMCAT_PASSWORD
+
+  run container_exec default ls -la $VOL_PREFIX/conf/
+  [[ "$output" =~ "server.xml" ]]
+  [[ "$output" =~ "tomcat-users.xml" ]]
+
+  run container_exec default ls -la $VOL_PREFIX/webapps/
+  [[ "$output" =~ "ROOT" ]]
+  [[ "$output" =~ "manager" ]]
+}
+
+@test "If host mounted, password and settings are preserved after deletion" {
+  container_create_with_host_volumes default -d \
+    -e TOMCAT_PASSWORD=$TOMCAT_PASSWORD
+
+  container_remove default
+  container_create_with_host_volumes default -d
 
   run curl_client default -i http://$TOMCAT_DEFAULT_USER:$TOMCAT_PASSWORD@$APP_NAME:8080/manager/html
   [[ "$output" =~ '200 OK' ]]
