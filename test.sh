@@ -102,3 +102,14 @@ cleanup_environment
   run curl_client default -i http://$TOMCAT_DEFAULT_USER:$TOMCAT_PASSWORD@$APP_NAME:8080/manager/html
   [[ "$output" =~ '200 OK' ]]
 }
+
+@test "Deploy sample application" {
+  container_create_with_host_volumes default -d \
+    -e TOMCAT_PASSWORD=$TOMCAT_PASSWORD
+
+  container_exec default curl --noproxy localhost --retry 5 http://localhost:8080/docs/appdev/sample/sample.war -o $VOL_PREFIX/webapps/sample.war
+  sleep 10
+
+  run curl_client default -i http://$APP_NAME:8080/sample/hello.jsp
+  [[ "$output" =~ '200 OK' ]]
+}
