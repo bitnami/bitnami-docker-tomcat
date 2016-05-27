@@ -6,7 +6,7 @@ TOMCAT_PASSWORD=test_password
 
 # source the helper script
 APP_NAME=tomcat
-SLEEP_TIME=10
+SLEEP_TIME=30
 VOL_PREFIX=/bitnami/$APP_NAME
 VOLUMES=$VOL_PREFIX
 load tests/docker_helper
