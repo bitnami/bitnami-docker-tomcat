@@ -178,26 +178,6 @@ docker-compose restart tomcat
 
 # Logging
 
-The Bitnami Tomcat Docker Image supports two different logging modes: logging to stdout, and logging to a file.
-
-## Logging to stdout
-
-The default behavior is to log to stdout, as Docker expects. These will be collected by Docker, converted to JSON and stored in the host, to be accessible via the `docker logs` command.
-
-```bash
-docker logs tomcat
-```
-
-or using Docker Compose:
-
-```bash
-docker-compose logs tomcat
-```
-
-This method of logging has the downside of not being easy to manage. Without an easy way to rotate logs, they could grow exponentially and take up large amounts of disk space on your host.
-
-# Logging
-
 The Bitnami Tomcat Docker image sends the container logs to the `stdout`. To view the logs:
 
 ```bash
@@ -315,6 +295,13 @@ This image is tested for expected runtime behavior, using the [Bats](https://git
 ```
 bats test.sh
 ```
+
+# Notable Changes
+
+## 8.0.35-r0
+
+- All volumes have been merged at `/bitnami/tomcat`. Now you only need to mount a single volume at `/bitnami/tomcat` for persistence.
+- The logs are always sent to the `stdout` and are no longer collected in the volume.
 
 # Contributing
 
